@@ -1,0 +1,638 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'MS Sans Serif', sans-serif;
+    background: linear-gradient(45deg, #008080, #006666);
+    height: 100vh;
+    overflow: hidden;
+    cursor: default;
+}
+
+.desktop {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="4" height="4" viewBox="0 0 4 4"><rect width="4" height="4" fill="%23008080"/><rect x="2" y="2" width="2" height="2" fill="%23006666"/></svg>') repeat;
+}
+
+.desktop-icon {
+    position: absolute;
+    width: 80px;
+    height: 80px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: white;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.8);
+    font-size: 11px;
+    text-align: center;
+    user-select: none;
+    transition: all 0.1s;
+}
+
+.desktop-icon:hover {
+    background: rgba(0,0,255,0.3);
+    border: 1px dotted white;
+}
+
+.desktop-icon img {
+    width: 32px;
+    height: 32px;
+    margin-bottom: 4px;
+    image-rendering: pixelated;
+}
+
+.icon-folder { top: 50px; left: 50px; }
+.icon-terminal { top: 50px; left: 150px; }
+.icon-about { top: 50px; left: 250px; }
+
+.taskbar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 40px;
+    background: linear-gradient(to bottom, #c0c0c0, #808080);
+    border-top: 2px solid #ffffff;
+    display: flex;
+    align-items: center;
+    padding: 0 4px;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.8);
+}
+
+.start-button {
+    height: 32px;
+    background: linear-gradient(to bottom, #c0c0c0, #808080);
+    border: 2px outset #c0c0c0;
+    padding: 0 20px;
+    font-size: 11px;
+    font-weight: bold;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.start-button:active {
+    border: 2px inset #c0c0c0;
+}
+
+.clock {
+    margin-left: auto;
+    padding: 0 8px;
+    font-size: 11px;
+    color: #000;
+    background: linear-gradient(to bottom, #dfdfdf, #c0c0c0);
+    border: 1px inset #c0c0c0;
+    height: 24px;
+    display: flex;
+    align-items: center;
+}
+
+.window {
+    position: absolute;
+    background: #c0c0c0;
+    border: 2px outset #c0c0c0;
+    min-width: 300px;
+    min-height: 200px;
+    display: none;
+    box-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+}
+
+.window.active {
+    display: block;
+    z-index: 1000;
+}
+
+.window-header {
+    height: 20px;
+    background: linear-gradient(to right, #000080, #0000ff);
+    color: white;
+    font-size: 11px;
+    font-weight: bold;
+    padding: 2px 4px;
+    display: flex;
+    align-items: center;
+    cursor: move;
+}
+
+.window-controls {
+    margin-left: auto;
+    display: flex;
+    gap: 2px;
+}
+
+.window-button {
+    width: 16px;
+    height: 14px;
+    background: #c0c0c0;
+    border: 1px outset #c0c0c0;
+    font-size: 8px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.window-button:active {
+    border: 1px inset #c0c0c0;
+}
+
+.window-content {
+    padding: 8px;
+    height: calc(100% - 20px);
+    overflow: auto;
+}
+
+.terminal {
+    width: 600px;
+    height: 400px;
+    top: 100px;
+    left: 100px;
+    background: #000;
+    color: #00ff00;
+    font-family: 'Courier New', monospace;
+    font-size: 12px;
+}
+
+.terminal .window-header {
+    background: linear-gradient(to right, #000080, #0000ff);
+}
+
+.terminal .window-content {
+    background: #000;
+    color: #00ff00;
+    padding: 8px;
+}
+
+.terminal-output {
+    height: 320px;
+    overflow-y: auto;
+    margin-bottom: 8px;
+    white-space: pre-wrap;
+}
+
+.terminal-input {
+    display: flex;
+    align-items: center;
+}
+
+.terminal-prompt {
+    color: #00ff00;
+    margin-right: 4px;
+}
+
+.terminal-command {
+    background: transparent;
+    border: none;
+    color: #00ff00;
+    font-family: 'Courier New', monospace;
+    font-size: 12px;
+    flex: 1;
+    outline: none;
+}
+
+.browser-window {
+    width: 800px;
+    height: 600px;
+    top: 50px;
+    left: 200px;
+}
+
+.browser-window .window-content {
+    padding: 0;
+}
+
+.browser-frame {
+    width: 100%;
+    height: 100%;
+    border: none;
+}
+
+.folder-window {
+    width: 400px;
+    height: 300px;
+    top: 150px;
+    left: 150px;
+}
+
+.folder-content {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+    gap: 10px;
+    padding: 10px;
+}
+
+.folder-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
+    padding: 4px;
+    border-radius: 2px;
+}
+
+.folder-item:hover {
+    background: rgba(0,0,255,0.1);
+}
+
+.folder-item img {
+    width: 32px;
+    height: 32px;
+    margin-bottom: 4px;
+}
+
+.folder-item span {
+    font-size: 10px;
+    text-align: center;
+    word-wrap: break-word;
+}
+
+.about-window {
+    width: 350px;
+    height: 250px;
+    top: 200px;
+    left: 300px;
+}
+
+.about-content {
+    text-align: center;
+    padding: 20px;
+}
+
+.about-content h2 {
+    margin-bottom: 10px;
+    color: #000080;
+}
+
+.about-content p {
+    margin-bottom: 8px;
+    font-size: 11px;
+    line-height: 1.4;
+}
+
+.cursor-blink {
+    animation: blink 1s infinite;
+}
+
+@keyframes blink {
+    0%, 50% { opacity: 1; }
+    51%, 100% { opacity: 0; }
+}
+
+.loading {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: #c0c0c0;
+    border: 2px outset #c0c0c0;
+    padding: 20px;
+    text-align: center;
+    z-index: 9999;
+}
+
+.loading.hidden {
+    display: none;
+}
+
+.progress-bar {
+    width: 200px;
+    height: 20px;
+    border: 2px inset #c0c0c0;
+    background: #ffffff;
+    margin: 10px 0;
+    position: relative;
+}
+
+.progress-fill {
+    height: 100%;
+    background: linear-gradient(to right, #000080, #0000ff);
+    width: 0%;
+    transition: width 0.3s;
+}
+
+.start-menu {
+    position: fixed;
+    bottom: 40px;
+    left: 4px;
+    width: 200px;
+    background: #c0c0c0;
+    border: 2px outset #c0c0c0;
+    box-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+    z-index: 2000;
+    display: none;
+}
+
+.start-menu.active {
+    display: block;
+}
+
+.start-menu-header {
+    background: linear-gradient(to right, #000080, #0000ff);
+    color: white;
+    padding: 4px 8px;
+    font-size: 11px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.start-menu-items {
+    padding: 4px 0;
+}
+
+.start-menu-item {
+    padding: 4px 8px;
+    font-size: 11px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: background 0.1s;
+}
+
+.start-menu-item:hover {
+    background: #000080;
+    color: white;
+}
+
+.start-menu-item img {
+    width: 16px;
+    height: 16px;
+}
+
+.start-menu-separator {
+    height: 1px;
+    background: #808080;
+    margin: 2px 4px;
+}
+
+.start-button.active {
+    border: 2px inset #c0c0c0;
+    background: linear-gradient(to bottom, #808080, #c0c0c0);
+}
+
+.tetris-window {
+    width: 480px;
+    height: 520px;
+    resize: both;
+    overflow: hidden;
+    min-width: 400px;
+    min-height: 450px;
+}
+
+.tetris-container {
+    display: flex;
+    padding: 8px;
+    gap: 10px;
+    height: 100%;
+}
+
+.tetris-game {
+    background: #dde5f4;
+    padding: 8px;
+    border: 2px inset #c0c0c0;
+}
+
+.tetris-panel {
+    width: 140px;
+    background: #c3cfe6;
+    padding: 8px;
+    border: 2px inset #c0c0c0;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.next-piece-display {
+    background: #b8c4dc;
+    border: 2px inset #c0c0c0;
+    padding: 5px;
+    text-align: center;
+}
+
+.tetris-info {
+    font-size: 11px;
+}
+
+.info-row {
+    display: flex;
+    justify-content: space-between;
+    margin: 3px 0;
+    font-weight: bold;
+}
+
+.tetris-controls {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.tetris-controls button {
+    background: linear-gradient(to bottom, #c0c0c0, #808080);
+    border: 2px outset #c0c0c0;
+    padding: 4px 8px;
+    font-size: 10px;
+    cursor: pointer;
+}
+
+.tetris-controls button:active {
+    border: 2px inset #c0c0c0;
+}
+
+.pause-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+
+.pause-box {
+    background: #c0c0c0;
+    border: 2px outset #c0c0c0;
+    padding: 20px;
+    text-align: center;
+}
+
+.pause-box h3 {
+    margin: 0 0 15px 0;
+    font-size: 14px;
+}
+
+.pause-box button {
+    display: block;
+    margin: 8px auto;
+    width: 100px;
+    background: linear-gradient(to bottom, #c0c0c0, #808080);
+    border: 2px outset #c0c0c0;
+    padding: 4px 8px;
+    font-size: 10px;
+    cursor: pointer;
+}
+
+.pause-box button:active {
+    border: 2px inset #c0c0c0;
+}
+
+.tetris-window {
+    width: 500px;
+    height: 650px;
+    top: 100px;
+    left: 200px;
+}
+
+.tetris-layout {
+    display: flex;
+    gap: 15px;
+    padding: 10px;
+    height: 100%;
+}
+
+.tetris-sidebar {
+    width: 150px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.tetris-stats {
+    background: #dde5f4;
+    border: 2px inset #c0c0c0;
+    padding: 10px;
+}
+
+.stat-item {
+    margin: 8px 0;
+    font-size: 11px;
+    font-weight: bold;
+}
+
+.tetris-controls {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.tetris-controls button {
+    background: linear-gradient(to bottom, #c0c0c0, #808080);
+    border: 2px outset #c0c0c0;
+    padding: 8px;
+    font-size: 11px;
+    cursor: pointer;
+}
+
+.tetris-controls button:active {
+    border: 2px inset #c0c0c0;
+}
+
+#tetrisCanvas {
+    border: 2px inset #c0c0c0;
+    background: #000;
+    width: 300px;
+    height: 600px;
+}
+
+.tetris-start {
+    width: 300px;
+    height: 600px;
+    background: #c0c0c0;
+    border: 2px inset #c0c0c0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+.tetris-start h2 {
+    font-size: 24px;
+    margin-bottom: 30px;
+    color: #000080;
+}
+
+.mode-selection {
+    margin-bottom: 20px;
+}
+
+.mode-selection h3 {
+    margin-bottom: 15px;
+    font-size: 14px;
+}
+
+.mode-selection button {
+    display: block;
+    margin: 8px auto;
+    width: 150px;
+    background: linear-gradient(to bottom, #c0c0c0, #808080);
+    border: 2px outset #c0c0c0;
+    padding: 8px;
+    font-size: 11px;
+    cursor: pointer;
+}
+
+.mode-selection button:active {
+    border: 2px inset #c0c0c0;
+}
+
+.game-options {
+    font-size: 11px;
+}
+
+.game-options label {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.game-window {
+    width: 580px;
+    height: 580px;
+    top: 100px;
+    left: 200px;
+}
+
+.game-window .window-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 10px;
+}
+
+.game-info {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 10px;
+    font-size: 11px;
+    font-weight: bold;
+}
+
+.game-info button {
+    background: linear-gradient(to bottom, #c0c0c0, #808080);
+    border: 2px outset #c0c0c0;
+    padding: 2px 8px;
+    font-size: 10px;
+    cursor: pointer;
+}
+
+.game-info button:active {
+    border: 2px inset #c0c0c0;
+}
+
+.game-window canvas {
+    border: 2px inset #c0c0c0;
+    background: #000;
+}

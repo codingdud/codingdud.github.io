@@ -1,216 +1,219 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>codingdud@github.io - Terminal Portfolio</title>
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <style>
-    body {
-      background: #181c20;
-      color: #e5e5e5;
-      font-family: 'Fira Mono', 'Consolas', 'Monaco', monospace;
-      margin: 0;
-      padding: 0;
-      min-height: 100vh;
-    }
-    .terminal {
-      max-width: 800px;
-      margin: 3rem auto;
-      background: #22272e;
-      border-radius: 8px;
-      box-shadow: 0 0 24px #0005;
-      padding: 2rem 1.5rem 1rem 1.5rem;
-      min-height: 600px;
-      position: relative;
-    }
-    .prompt {
-      color: #8aff80;
-    }
-    .input-line {
-      display: flex;
-      align-items: center;
-      margin-bottom: 0.3em;
-    }
-    .input-field {
-      background: none;
-      border: none;
-      color: #e5e5e5;
-      font-size: 1em;
-      outline: none;
-      font-family: inherit;
-      width: 100%;
-    }
-    .output {
-      margin-bottom: 1em;
-      white-space: pre-wrap;
-      line-height: 1.5;
-    }
-    .cursor {
-      display: inline-block;
-      width: 10px;
-      height: 1em;
-      background: #8aff80;
-      animation: blink 1s step-end infinite;
-      margin-left: 2px;
-      vertical-align: text-bottom;
-    }
-    @keyframes blink {
-      50% { background: transparent; }
-    }
-    a {
-      color: #7ac7ff;
-      text-decoration: none;
-    }
-    a:hover {
-      text-decoration: underline;
-    }
-    .logo {
-      font-weight: bold;
-      color: #ffcb6b;
-      margin-bottom: 2em;
-      font-size: 1.25em;
-    }
-    @media (max-width: 600px) {
-      .terminal { padding: 1rem 0.5rem 0.5rem 0.5rem; }
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CodingDud - Retro PC Portfolio</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <div class="terminal" id="terminal">
-    <div class="logo">codingdud@github.io:~$ Welcome to my interactive portfolio! Type <span style="color:#8aff80">help</span> for a list of commands.</div>
-    <div id="output"></div>
-    <div class="input-line">
-      <span class="prompt">codingdud@github.io:~$</span>&nbsp;
-      <input class="input-field" id="input" autofocus autocomplete="off" spellcheck="false" />
-      <span class="cursor"></span>
+    <div class="loading" id="loading">
+        <h3>CodingDud Portfolio</h3>
+        <p>Loading System...</p>
+        <div class="progress-bar">
+            <div class="progress-fill" id="progressFill"></div>
+        </div>
+        <p id="loadingText">Initializing...</p>
     </div>
-  </div>
-  <script>
-    const output = document.getElementById('output');
-    const input = document.getElementById('input');
-    const commands = {
-      help: `
-Available commands:
-  about         - About me
-  experience    - Professional Experience
-  projects      - Featured Projects
-  skills        - Technical Skills
-  certifications- Certifications
-  contact       - How to reach me
-  clear         - Clear the terminal
-      `,
-      about: `
-Animesh Kumar
-Software Developer & Full Stack Engineer
-Want to know me? Ask anything!
-      `,
-      experience: `
-Professional Experience
 
-Software Developer Intern @ Sasken (Feb 2025 – Present, Bengaluru)
-  - Optimized AOSP's img2simg tool using Rust, improving efficiency by 25-30%
-  - Automated testing frameworks, reducing manual testing by 40%
+    <div class="desktop">
+        <!-- Desktop Icons -->
+        <div class="desktop-icon icon-folder" onclick="openWindow('folder')">
+            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Cpath fill='%23ffff00' d='M2 6v20h28V10H14l-2-4H2z'/%3E%3Cpath fill='%23ffcc00' d='M2 6v4h28v16H2V6h10l2 4h16v-4H2z'/%3E%3C/svg%3E" alt="Folder">
+            <span>My Projects</span>
+        </div>
 
-Virtual Developer Intern @ ATG (Jun 2024 – Aug 2024, Remote)
-  - Developed Android apps including TechLearn (EdTech)
-  - Enhanced UI/UX and API integration
 
-Virtual Developer Intern @ Salesforce (Nov 2023 – Jan 2024, Remote)
-  - Built 5+ Salesforce apps with Apex, Visualforce, LWC
-  - Ensured 99.9% data accuracy in Batch Apex testing
-      `,
-      projects: `
-Featured Projects
 
-- [WebGen](https://github.com/codingdud/WebGen) (Jan 2025): Web-based Asset Generation App (React, Redux, Node, Typescript)
-- [Student Accommodation Finder](https://github.com/codingdud/StudentAccom) (Apr 2024): Platform for 500+ students (React, Node, Redux, Geospatial)
-- [Form Easy](https://github.com/codingdud/FormEasy) (Dec 2023): Scalable Form Management (React, MongoDB, Docker)
-- [AlgoDocHub](https://github.com/codingdud/AlgoDocHub) (Dec 2024): Algorithms & DSA Resource (C++)
-- [coolicons](https://github.com/codingdud/coolicons) (Dec 2024): Icon library for React (Storybook, SVG)
-- [PhotoSeekAI](https://github.com/codingdud/PhotoSeekAI) (Dec 2024): Photo Management API (Flask, Cloudinary, PostgreSQL)
-- [PhotoFlow](https://github.com/codingdud/PhotoFlow) (Dec 2024): UI for photo sharing app (React Native)
-- [Feedback System](https://github.com/codingdud/FeedbackSystem) (Jun 2025): Feedback system for managers/employees (Next.js, FastAPI, SQLite)
-      `,
-      skills: `
-Technical Skills
+        <div class="desktop-icon icon-terminal" onclick="openWindow('terminal')">
+            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Crect fill='%23000000' width='32' height='32'/%3E%3Cpath fill='%2300ff00' d='M4 8l4 4-4 4v-8zm8 8h12v2H12v-2z'/%3E%3C/svg%3E" alt="Terminal">
+            <span>Terminal</span>
+        </div>
 
-Programming Languages:
-  - JavaScript (95%)
-  - TypeScript (88%)
-  - Python (85%)
-  - C/C++ (80%)
-  - Rust (75%)
+        <div class="desktop-icon icon-about" onclick="openWindow('about')">
+            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Ccircle fill='%23000080' cx='16' cy='16' r='16'/%3E%3Ctext x='16' y='22' text-anchor='middle' fill='%23ffffff' font-size='20' font-family='Arial'%3Ei%3C/text%3E%3C/svg%3E" alt="About">
+            <span>About</span>
+        </div>
+    </div>
 
-Frameworks/Technologies:
-  - React.js/Next.js (92%)
-  - Node.js/Express.js (88%)
-  - React Native (85%)
-  - Docker (82%)
-  - TensorFlow/PyTorch (78%)
+    <!-- Windows -->
+    <div class="window terminal" id="terminalWindow">
+        <div class="window-header">
+            <span>Terminal - CodingDud</span>
+            <div class="window-controls">
+                <div class="window-button" onclick="closeWindow('terminal')">×</div>
+            </div>
+        </div>
+        <div class="window-content">
+            <div class="terminal-output" id="terminalOutput">CodingDud Portfolio Terminal v1.0
+Copyright (C) 2024 CodingDud. All rights reserved.
 
-Core Competencies:
-  🔧 Problem Resolution
-  📊 Data-Driven Decisions
-  📋 Organized Workflow
-  ⚡ Technology Integration
-  🤝 Collaborative Teamwork
-  ⏰ Time Management
-  💡 Creative Solutions
-  👥 User-Centric Design
-      `,
-      certifications: `
-Certifications
+Type 'help' for available commands.
 
-- AWS Certified Solutions Architect (SAA-C03)
-- Generative AI: Introduction and Applications
-- Postman API Fundamentals Expert
-- Google Data Analytics Specialization
-- Google UX Design Specialization
-- React - The Complete Guide
-      `,
-      contact: `
-Connect with me:
-- Email: animesh.kumar@email.com
-- GitHub: [codingdud](https://github.com/codingdud)
-- LinkedIn: [linkedin.com/in/animesh-kumar](https://linkedin.com/in/animesh-kumar)
-      `,
-      clear: ''
-    };
+</div>
+            <div class="terminal-input">
+                <span class="terminal-prompt">C:\Portfolio></span>
+                <input type="text" class="terminal-command" id="terminalInput" onkeypress="handleTerminalInput(event)">
+                <span class="cursor-blink">_</span>
+            </div>
+        </div>
+    </div>
 
-    function printOutput(command, text) {
-      output.innerHTML += `<div><span class="prompt">codingdud@github.io:~$</span> ${command}</div>`;
-      if(text) output.innerHTML += `<div class="output">${text}</div>`;
-      output.scrollTop = output.scrollHeight;
-    }
+    <div class="window browser-window" id="browserWindow">
+        <div class="window-header">
+            <span id="browserTitle">Browser</span>
+            <div class="window-controls">
+                <div class="window-button" onclick="closeWindow('browser')">×</div>
+            </div>
+        </div>
+        <div class="window-content">
+            <iframe class="browser-frame" id="browserFrame" src=""></iframe>
+        </div>
+    </div>
 
-    function handleCommand(cmd) {
-      const command = cmd.trim().toLowerCase();
-      if(command === '') return;
-      if(commands[command] !== undefined) {
-        if(command === 'clear') {
-          output.innerHTML = '';
-        } else {
-          printOutput(command, commands[command]);
-        }
-      } else {
-        printOutput(command, "Command not found. Type <span style='color:#8aff80'>help</span> for available commands.");
-      }
-    }
+    <div class="window folder-window" id="folderWindow">
+        <div class="window-header">
+            <span>My Projects</span>
+            <div class="window-controls">
+                <div class="window-button" onclick="closeWindow('folder')">×</div>
+            </div>
+        </div>
+        <div class="window-content">
+            <div class="folder-content">
+                <!-- Projects will be loaded dynamically -->
+            </div>
+        </div>
+    </div>
 
-    input.addEventListener('keydown', function(e) {
-      if(e.key === 'Enter') {
-        handleCommand(input.value);
-        input.value = '';
-      }
-    });
+    <div class="window about-window" id="aboutWindow">
+        <div class="window-header">
+            <span>About CodingDud</span>
+            <div class="window-controls">
+                <div class="window-button" onclick="closeWindow('about')">×</div>
+            </div>
+        </div>
+        <div class="window-content">
+            <div class="about-content">
+                <h2>CodingDud Portfolio</h2>
+                <p><strong>Developer:</strong> CodingDud</p>
+                <p><strong>Version:</strong> 1.0 Retro Edition</p>
+                <p><strong>System:</strong> Portfolio OS</p>
+                <hr style="margin: 15px 0;">
+                <p>Welcome to my retro-style portfolio! This interface is designed to showcase my projects with a nostalgic feel.</p>
+                <p>Use the terminal to explore my work or click the desktop icons to navigate.</p>
+            </div>
+        </div>
+    </div>
 
-    // Focus input on click anywhere in terminal
-    document.getElementById('terminal').addEventListener('click', () => {
-      input.focus();
-    });
+    <!-- Taskbar -->
+    <div class="taskbar">
+        <div class="start-button" id="startButton" onclick="toggleStartMenu()">
+            <span>🖥️ Start</span>
+        </div>
+        <div class="clock" id="clock">12:00 PM</div>
+    </div>
 
-    // Initial "help" output
-    printOutput('help', commands.help);
-  </script>
+    <!-- Start Menu -->
+    <div class="start-menu" id="startMenu">
+        <div class="start-menu-header">
+            <span>🖥️</span>
+            <span>CodingDud Portfolio</span>
+        </div>
+        <div class="start-menu-items">
+            <div class="start-menu-item" onclick="openWindow('folder'); closeStartMenu();">
+                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16'%3E%3Cpath fill='%23ffff00' d='M1 3v10h14V5H7L6 3H1z'/%3E%3C/svg%3E" alt="Projects">
+                <span>My Projects</span>
+            </div>
+            <!-- Project items will be loaded dynamically -->
+            <div class="start-menu-separator"></div>
+            <div class="start-menu-item" onclick="openWindow('terminal'); closeStartMenu();">
+                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16'%3E%3Crect fill='%23000000' width='16' height='16'/%3E%3Cpath fill='%2300ff00' d='M2 4l2 2-2 2V4zm4 4h6v1H6V8z'/%3E%3C/svg%3E" alt="Terminal">
+                <span>Terminal</span>
+            </div>
+            <div class="start-menu-item" onclick="openWindow('about'); closeStartMenu();">
+                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16'%3E%3Ccircle fill='%23000080' cx='8' cy='8' r='8'/%3E%3Ctext x='8' y='11' text-anchor='middle' fill='%23ffffff' font-size='10'%3Ei%3C/text%3E%3C/svg%3E" alt="About">
+                <span>About</span>
+            </div>
+            <div class="start-menu-separator"></div>
+            <div class="start-menu-item" onclick="showHelp(); closeStartMenu();">
+                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16'%3E%3Ccircle fill='%23ff0000' cx='8' cy='8' r='8'/%3E%3Ctext x='8' y='11' text-anchor='middle' fill='%23ffffff' font-size='10'%3E?%3C/text%3E%3C/svg%3E" alt="Help">
+                <span>Help</span>
+            </div>
+            <div class="start-menu-item" onclick="openWindow('snake'); closeStartMenu();">
+                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16'%3E%3Crect fill='%23008000' width='16' height='16'/%3E%3Cpath fill='%23ffffff' d='M2 6h4v4H2V6zm4 0h4v4H6V6zm4 0h4v4h-4V6z'/%3E%3C/svg%3E" alt="Snake">
+                <span>Snake Game</span>
+            </div>
+            <div class="start-menu-item" onclick="openWindow('tetris'); closeStartMenu();">
+                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16'%3E%3Crect fill='%23ff0000' width='16' height='16'/%3E%3Cpath fill='%23ffffff' d='M4 2h8v2H4V2zm2 2h4v2H6V4zm0 2h4v2H6V6zm-2 2h8v2H4V8z'/%3E%3C/svg%3E" alt="Tetris">
+                <span>Tetris Game</span>
+            </div>
+            <div class="start-menu-separator"></div>
+            <div class="start-menu-item" onclick="refreshDesktop(); closeStartMenu();">
+                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16'%3E%3Cpath fill='%23008000' d='M8 2a6 6 0 0 1 6 6h-2a4 4 0 0 0-4-4V2zm0 12v-2a4 4 0 0 0 4-4h2a6 6 0 0 1-6 6zM2 8a6 6 0 0 1 6-6v2a4 4 0 0 0-4 4H2z'/%3E%3C/svg%3E" alt="Refresh">
+                <span>Refresh</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Game Windows -->
+    <div class="window game-window" id="snakeWindow">
+        <div class="window-header">
+            <span>Snake Game</span>
+            <div class="window-controls">
+                <div class="window-button" onclick="closeWindow('snake')">×</div>
+            </div>
+        </div>
+        <div class="window-content">
+            <div class="game-info">
+                <div>Score: <span id="snakeScore">0</span></div>
+                <div>Level: <span id="snakeLevel">1</span></div>
+                <button onclick="restartSnake()">Restart</button>
+            </div>
+            <canvas id="snakeCanvas" width="480" height="480"></canvas>
+        </div>
+    </div>
+
+    <div class="window tetris-window" id="tetrisWindow">
+        <div class="window-header">
+            <span>Tetris Game</span>
+            <div class="window-controls">
+                <div class="window-button" onclick="closeWindow('tetris')">×</div>
+            </div>
+        </div>
+        <div class="window-content tetris-layout">
+            <div id="tetrisStartScreen" class="tetris-start">
+                <h2>TETRIS</h2>
+                <div class="mode-selection">
+                    <h3>Select Mode:</h3>
+                    <button onclick="startTetris('classic')">Classic</button>
+                    <button onclick="startTetris('glass')">Glass Mode</button>
+                    <button onclick="startTetris('colored')">Colored Blocks</button>
+                    <button onclick="startTetris('textured')">Textured</button>
+                </div>
+                <div class="game-options">
+                    <label><input type="checkbox" id="showGrid" checked> Show Grid</label>
+                </div>
+            </div>
+            <canvas id="tetrisCanvas" width="300" height="600" style="display:none;"></canvas>
+            <div class="tetris-sidebar">
+                <div class="tetris-stats">
+                    <div class="stat-item">Score: <span id="tetrisScore">0</span></div>
+                    <div class="stat-item">Level: <span id="tetrisLevel">1</span></div>
+                    <div class="stat-item">Lines: <span id="tetrisLines">0</span></div>
+                </div>
+                <div class="tetris-controls">
+                    <button onclick="pauseTetris()" id="pauseBtn">Pause</button>
+                    <button onclick="restartTetris()">Main Menu</button>
+                    <button onclick="closeWindow('tetris')">Quit</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <script src="projects.js"></script>
+    <script src="games.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>
